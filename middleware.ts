@@ -6,8 +6,13 @@ export function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
   const needsAuth = path.startsWith('/(protected)');
   if (needsAuth && !token) {
-    const url = req.nextUrl.clone(); url.pathname = '/auth/login'; return NextResponse.redirect(url);
+    const url = req.nextUrl.clone(); 
+    url.pathname = '/auth/login'; 
+    return NextResponse.redirect(url);
   }
   return NextResponse.next();
 }
-export const config = { matcher: ['/((protected)/:path*)'] };
+
+export const config = { 
+  matcher: ['/(protected)/:path*'] 
+};
