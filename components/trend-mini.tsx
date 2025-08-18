@@ -59,7 +59,13 @@ export default function TrendMini({
 
   const currentValue = data[data.length - 1];
   const previousValue = data[data.length - 2];
-  const trend = previousValue !== undefined ? currentValue > previousValue : 'neutral';
+  const trend: 'up' | 'down' | 'neutral' = previousValue !== undefined 
+    ? currentValue > previousValue 
+      ? 'up' 
+      : currentValue < previousValue 
+        ? 'down' 
+        : 'neutral'
+    : 'neutral';
 
   return (
     <div className={`flex items-center space-x-2 ${className}`}>
