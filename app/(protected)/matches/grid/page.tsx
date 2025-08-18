@@ -2,6 +2,14 @@
 import { useState, useEffect } from 'react';
 import GridCell from '@/components/grid-cell';
 
+interface ScheduleData {
+  homeTeam: string;
+  awayTeam: string;
+  competition: string;
+  note?: string;
+  status: 'CONFIRMED' | 'PENDING' | 'CANCELLED';
+}
+
 export default function Grid() {
   const fields = ['11v11', '7v7-1', '7v7-2', '5v5-1', '5v5-2', '3v3-A', '3v3-B'];
   const times = Array.from({ length: 12 }, (_, i) => `${String(9 + i).padStart(2, '0')}:00`);
@@ -10,25 +18,25 @@ export default function Grid() {
   const [selectedCell, setSelectedCell] = useState<{ row: number; col: number } | null>(null);
   
   // Sample data for demonstration
-  const scheduleData = {
+  const scheduleData: Record<string, ScheduleData> = {
     '11v11-10:00': {
       homeTeam: 'U-16 Azul',
       awayTeam: 'Tigres Academy',
       competition: 'League Match',
       note: 'Home field',
-      status: 'CONFIRMED' as const
+      status: 'CONFIRMED'
     },
     '7v7-1-14:00': {
       homeTeam: 'U-12 Rojo',
       awayTeam: 'U-12 Verde',
       competition: 'Internal Scrimmage',
-      status: 'PENDING' as const
+      status: 'PENDING'
     },
     '5v5-1-16:00': {
       homeTeam: 'U-14 Azul',
       awayTeam: 'U-14 Rojo',
       competition: 'Training Match',
-      status: 'CONFIRMED' as const
+      status: 'CONFIRMED'
     }
   };
 
@@ -138,7 +146,7 @@ export default function Grid() {
             {/* Time slots */}
             {times.map((time, colIndex) => {
               const cellKey = `${field}-${time}`;
-              const data = scheduleData[cellKey as keyof typeof scheduleData];
+              const data = scheduleData[cellKey];
               const isNow = colIndex === getCurrentTimeColumn();
               const isSelected = selectedCell?.row === rowIndex && selectedCell?.col === colIndex;
               
