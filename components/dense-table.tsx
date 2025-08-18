@@ -61,10 +61,12 @@ export default function DenseTable({
 }
 
 // Helper component for table headers
-export function TableHeader({ children, className = '', ...props }: React.ThHTMLAttributes<HTMLTableCellElement>) {
+export function TableHeader({ children, className = '', numeric = false, ...props }: React.ThHTMLAttributes<HTMLTableCellElement> & { numeric?: boolean }) {
   return (
     <th 
-      className={`bg-usgc-panel font-medium text-left border-b border-usgc-line sticky top-0 z-10 ${className}`}
+      className={`bg-usgc-panel font-medium border-b border-usgc-line sticky top-0 z-10 ${
+        numeric ? 'text-right' : 'text-left'
+      } ${className}`}
       {...props}
     >
       {children}
