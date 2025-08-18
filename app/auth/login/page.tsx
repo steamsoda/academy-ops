@@ -12,7 +12,7 @@ export default function LoginPage(){
   async function onSubmit(e:FormEvent){
     e.preventDefault();
     const res = await signIn('credentials',{ redirect:false, email, password });
-    if (res?.ok) router.push('/(protected)/dashboard');
+    if (res?.ok) router.push('/dashboard');
     else setErr('Invalid email or password.');
   }
 

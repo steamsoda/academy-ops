@@ -9,7 +9,7 @@ export function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
   
   // Check if trying to access protected routes
-  if (path.startsWith('/(protected)') || path.startsWith('/dashboard')) {
+  if (path.startsWith('/dashboard')) {
     if (!token) {
       // Redirect to login
       const loginUrl = new URL('/auth/login', req.url);
@@ -22,7 +22,6 @@ export function middleware(req: NextRequest) {
 
 export const config = { 
   matcher: [
-    '/(protected)/:path*',
     '/dashboard/:path*'
   ] 
 };
