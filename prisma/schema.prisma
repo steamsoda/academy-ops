@@ -1,0 +1,20 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
+
+enum Role { DIRECTOR COORDINATOR COACH REFEREE PARENT FINANCE }
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String?
+  name      String?
+  role      Role     @default(COACH)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Coach     Coach?
+  Parent    Parent?
+}
+
+/* (You can append the rest of the models later; keep app compilable with just User for now) */
+model Coach { id String @id @default(cuid()) userId String @unique User User @relation(fields:[userId], references:[id]) }
+model Parent { id String @id @default(cuid()) userId String @unique User User @relation(fields:[userId], references:[id]) }

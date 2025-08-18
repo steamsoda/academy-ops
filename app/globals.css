@@ -1,0 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+:root{
+  --font-mono:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --porto-blue:#003399; --porto-white:#FFFFFF; --accent:#111827;
+}
+html,body,:root{height:100%}
+body{font-family:var(--font-mono); background:#0b0e14; color:#e5e7eb;}
+a{color:#9ab6ff}
