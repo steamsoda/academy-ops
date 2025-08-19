@@ -1,0 +1,5 @@
+[33mb98132d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Fix Vercel build: Remove postinstall script, add env vars, improve Prisma config
+[33mb8ae3f5[m Force Vercel refresh - build fixes
+[33m4264073[m Fix Vercel build: Add postinstall script and update build command
+[33m632b2d3[m Update README.md
+[33m8cadae9[m postgres update
