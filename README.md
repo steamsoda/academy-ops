@@ -142,7 +142,7 @@ npm run db:setup:prod
 
 ## 🎨 Theme System
 
-The application supports two themes:
+The application supports two cool themes:
 
 - **Retro 98**: Light theme with classic Windows 98 aesthetics
 - **Dark**: Dark theme for modern preferences
