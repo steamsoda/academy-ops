@@ -5,6 +5,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:setup": "npm run db:generate && npm run db:push && npm run db:seed",
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {

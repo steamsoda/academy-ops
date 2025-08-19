@@ -16,6 +16,34 @@ enum Role {
   FINANCE
 }
 
+enum PlayerStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  GRADUATED
+}
+
+enum MatchStatus {
+  SCHEDULED
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -32,10 +60,117 @@ model Coach {
   id     String @id @default(cuid())
   userId String @unique
   User   User   @relation(fields: [userId], references: [id])
+  teams  Team[]
 }
 
 model Parent {
-  id     String @id @default(cuid())
-  userId String @unique
-  User   User   @relation(fields: [userId], references: [id])
+  id      String   @id @default(cuid())
+  userId  String   @unique
+  User    User     @relation(fields: [userId], references: [id])
+  players Player[]
+}
+
+model Player {
+  id           String       @id @default(cuid())
+  name         String
+  dateOfBirth  DateTime
+  age          Int
+  position     String?
+  status       PlayerStatus @default(ACTIVE)
+  registrationDate DateTime @default(now())
+  parentId     String?
+  Parent       Parent?      @relation(fields: [parentId], references: [id])
+  teamId       String?
+  Team         Team?        @relation(fields: [teamId], references: [id])
+  attendances  Attendance[]
+  payments     Payment[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String   // e.g., "U-12 Azul", "U-14 Rojo"
+  ageGroup    String   // e.g., "U-12", "U-14"
+  color       String?  // e.g., "Azul", "Rojo"
+  coachId     String?
+  Coach       Coach?   @relation(fields: [coachId], references: [id])
+  players     Player[]
+  homeMatches Match[]  @relation("HomeTeam")
+  awayMatches Match[]  @relation("AwayTeam")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Field {
+  id        String   @id @default(cuid())
+  name      String   // e.g., "11v11", "7v7-1", "5v5-1"
+  type      String   // e.g., "11v11", "7v7", "5v5", "3v3"
+  number    String?  // e.g., "1", "2", "A", "B"
+  matches   Match[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Match {
+  id          String      @id @default(cuid())
+  date        DateTime
+  startTime   String      // e.g., "14:00"
+  endTime     String?     // e.g., "15:30"
+  status      MatchStatus @default(SCHEDULED)
+  homeTeamId  String?
+  homeTeam    Team?       @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeamId  String?
+  awayTeam    Team?       @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  fieldId     String?
+  field       Field?      @relation(fields: [fieldId], references: [id])
+  competition String?     // e.g., "League Match", "Training Match"
+  notes       String?
+  homeScore   Int?
+  awayScore   Int?
+  attendances Attendance[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Attendance {
+  id        String           @id @default(cuid())
+  matchId   String
+  match     Match            @relation(fields: [matchId], references: [id])
+  playerId  String
+  player    Player           @relation(fields: [playerId], references: [id])
+  status    AttendanceStatus @default(PRESENT)
+  notes     String?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@unique([matchId, playerId])
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  playerId    String
+  player      Player        @relation(fields: [playerId], references: [id])
+  amount      Float
+  currency    String        @default("MXN")
+  description String        // e.g., "Monthly fee", "Tournament fee"
+  status      PaymentStatus @default(PENDING)
+  dueDate     DateTime?
+  paidDate    DateTime?
+  notes       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Document {
+  id          String   @id @default(cuid())
+  title       String
+  type        String   // e.g., "Medical Form", "Registration", "Contract"
+  fileName    String
+  fileUrl     String
+  playerId    String?
+  player      Player?  @relation(fields: [playerId], references: [id])
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
