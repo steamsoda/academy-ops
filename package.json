@@ -3,12 +3,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "db:setup": "npm run db:generate && npm run db:push && npm run db:seed",
+    "db:setup:dev": "cp prisma/schema.sqlite.prisma prisma/schema.prisma && npm run db:setup",
+    "db:setup:prod": "npm run db:generate && prisma migrate deploy && npm run db:seed",
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {

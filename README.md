@@ -37,13 +37,16 @@ A Windows 98-inspired academy management system built with Next.js, Prisma, and 
    Edit `.env.local` and set your configuration values.
 
 3. **Set up the database**
+   
+   **For Development (SQLite):**
    ```bash
-   npm run db:setup
+   npm run db:setup:dev
    ```
-   This will:
-   - Generate Prisma client
-   - Push schema to database
-   - Seed with sample data
+   
+   **For Production (PostgreSQL):**
+   ```bash
+   npm run db:setup:prod
+   ```
 
 4. **Start the development server**
    ```bash
@@ -59,18 +62,17 @@ A Windows 98-inspired academy management system built with Next.js, Prisma, and 
 - **Coach**: `coach@dfmonterrey.mx` / `coach123`
 - **Parent**: `parent@dfmonterrey.mx` / `parent123`
 
-## 🗄️ Database Schema
+## 🗄️ Database Configuration
 
-The system uses Prisma with SQLite and includes the following models:
+### Development (SQLite)
+- Uses local SQLite database file
+- No external database required
+- Perfect for local development
 
-- **Users**: Authentication and role management
-- **Players**: Academy player information
-- **Teams**: Age-based team organization
-- **Matches**: Game scheduling and results
-- **Fields**: Facility management
-- **Attendance**: Player attendance tracking
-- **Payments**: Financial management
-- **Documents**: File management
+### Production (PostgreSQL)
+- Requires PostgreSQL database
+- Supports Vercel, Railway, or any PostgreSQL provider
+- Use connection string format: `postgresql://username:password@host:port/database?schema=public`
 
 ## 🎯 API Endpoints
 
@@ -118,14 +120,17 @@ The seed script creates:
 # Generate Prisma client
 npm run db:generate
 
-# Push schema changes
+# Push schema changes (development)
 npm run db:push
 
 # Seed database
 npm run db:seed
 
-# Full database setup
-npm run db:setup
+# Full database setup (development)
+npm run db:setup:dev
+
+# Full database setup (production)
+npm run db:setup:prod
 ```
 
 ### Adding New Features
@@ -160,7 +165,10 @@ The UI is optimized for desktop use with the Windows 98 aesthetic, but includes 
 ### Vercel (Recommended)
 
 1. Connect your repository to Vercel
-2. Set environment variables in Vercel dashboard
+2. Set environment variables in Vercel dashboard:
+   - `DATABASE_URL`: Your PostgreSQL connection string
+   - `NEXTAUTH_SECRET`: A strong random string
+   - `NEXTAUTH_URL`: Your production URL
 3. Deploy automatically on push
 
 ### Other Platforms
