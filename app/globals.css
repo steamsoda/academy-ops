@@ -2,29 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap');
 
 :root {
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --usgc-bg: #0b0e14;
-  --usgc-panel: #0f1320;
-  --usgc-line: #1b2233;
-  --usgc-text: #e5e7eb;
-  --usgc-muted: #93a1b0;
-  --usgc-accent: #003399;
 }
 
+/* Import retro98 styles */
+@import '../styles/retro98.css';
+
+/* Base styles */
 html, body, :root {
   height: 100%;
 }
 
-/* USGC Baseline */
 body {
   font-family: var(--font-mono);
-  background: var(--usgc-bg);
-  color: var(--usgc-text);
-  font-size: 14px;
-  line-height: 1.25;
+  font-size: 12px;
+  line-height: 1.22;
   font-variant-ligatures: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -37,92 +32,12 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
-h1 { font-size: 24px; }
-h2 { font-size: 20px; }
-h3 { font-size: 18px; }
-h4 { font-size: 16px; }
-h5 { font-size: 14px; }
-h6 { font-size: 13px; }
-
-/* Links */
-a {
-  color: var(--usgc-accent);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* Tables */
-table {
-  font-size: 13px;
-  line-height: 1.25;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 8px 12px;
-  text-align: left;
-  border-bottom: 1px solid var(--usgc-line);
-  vertical-align: top;
-}
-
-th {
-  font-weight: 600;
-  background: var(--usgc-panel);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-/* Buttons */
-button {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  line-height: 1.25;
-}
-
-/* Form elements */
-input, select, textarea {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  line-height: 1.25;
-  background: var(--usgc-panel);
-  border: 1px solid var(--usgc-line);
-  color: var(--usgc-text);
-  padding: 6px 8px;
-  border-radius: 4px;
-}
-
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: var(--usgc-accent);
-  box-shadow: 0 0 0 1px var(--usgc-accent);
-}
-
-/* Custom scrollbar - USGC style */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--usgc-panel);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--usgc-line);
-  border-radius: 2px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--usgc-accent);
-}
-
-::-webkit-scrollbar-corner {
-  background: var(--usgc-panel);
-}
+h1 { font-size: 20px; }
+h2 { font-size: 18px; }
+h3 { font-size: 16px; }
+h4 { font-size: 14px; }
+h5 { font-size: 13px; }
+h6 { font-size: 12px; }
 
 /* Utility classes */
 .text-mono {
@@ -130,20 +45,15 @@ input:focus, select:focus, textarea:focus {
 }
 
 .text-muted {
-  color: var(--usgc-muted);
+  color: var(--98-text-muted);
 }
 
 .border-hairline {
   border-width: 1px;
 }
 
-/* Remove ornamental shadows and effects */
-* {
-  box-shadow: none !important;
-}
-
 /* Focus styles */
 .focus-ring:focus {
-  outline: none;
-  box-shadow: 0 0 0 1px var(--usgc-accent) !important;
+  outline: 1px dotted #000;
+  outline-offset: 1px;
 }

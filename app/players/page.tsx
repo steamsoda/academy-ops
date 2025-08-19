@@ -1,6 +1,10 @@
 'use client';
 import { useState } from 'react';
-import DenseTable, { TableHeader, TableCell } from '@/components/dense-table';
+import Panel98 from '@/components/ui98/Panel98';
+import Toolbar98 from '@/components/ui98/Toolbar98';
+import Button98 from '@/components/ui98/Button98';
+import { TextInput98 } from '@/components/ui98/Input98';
+import Table98 from '@/components/ui98/Table98';
 
 export default function PlayersPage() {
   const [selectedPlayers, setSelectedPlayers] = useState<number[]>([]);
@@ -37,191 +41,89 @@ export default function PlayersPage() {
   };
 
   const handleExport = () => {
-    // Export functionality
     console.log('Exporting players:', selectedPlayers.length > 0 ? selectedPlayers : 'all');
   };
 
-  const currentTime = new Date().toLocaleTimeString('en-US', { 
-    hour: '2-digit', 
-    minute: '2-digit',
-    hour12: false 
-  });
+  const asOf = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  const tableRows = filteredPlayers.map(player => [
+    <input
+      key={`checkbox-${player.id}`}
+      type="checkbox"
+      checked={selectedPlayers.includes(player.id)}
+      onChange={() => handleSelectPlayer(player.id)}
+    />,
+    player.name,
+    player.age.toString(),
+    player.team,
+    player.position,
+    <span className={player.status === 'Active' ? 'status-confirmed' : 'status-cancelled'}>
+      {player.status.toUpperCase()}
+    </span>,
+    new Date(player.registrationDate).toLocaleDateString(),
+    <div style={{ display: 'flex', gap: 4 }}>
+      <Button98 style={{ padding: '2px 6px', fontSize: '10px' }}>Edit</Button98>
+      <Button98 style={{ padding: '2px 6px', fontSize: '10px' }}>Delete</Button98>
+    </div>
+  ]);
 
   return (
-    <div className="min-h-screen bg-usgc-bg text-usgc-text">
-      {/* Navigation Bar - Dense and functional */}
-      <nav className="bg-usgc-panel border-b border-usgc-line px-4 py-2">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-lg font-semibold text-usgc-accent">Dragon Force Monterrey</h1>
-            <span className="text-xs text-usgc-muted">Academy Operations</span>
-          </div>
-          <div className="flex items-center space-x-4 text-xs">
-            <span className="text-usgc-muted">Last sync {currentTime}</span>
-            <span className="text-usgc-text">Admin</span>
-            <a href="/dashboard" className="text-usgc-accent hover:underline focus-ring">
-              Back to Dashboard
-            </a>
-          </div>
+    <div style={{ minHeight: '100vh', background: 'var(--98-bg)' }}>
+      {/* Navigation Bar */}
+      <div className="bevel-raise" style={{ margin: 8, marginBottom: 0 }}>
+        <div className="titlebar">
+          Dragon Force Monterrey — Academy Operations
         </div>
-      </nav>
+        <div style={{ padding: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <span style={{ fontSize: '11px', color: 'var(--98-text-muted)' }}>Last sync {asOf}</span>
+            <span>Admin</span>
+          </div>
+          <a href="/dashboard" style={{ color: 'var(--98-link)' }}>Back to Dashboard</a>
+        </div>
+      </div>
 
-      <div className="flex">
-        {/* Sidebar Navigation - Dense and functional */}
-        <aside className="w-48 bg-usgc-panel border-r border-usgc-line min-h-screen p-3">
-          <nav className="space-y-1">
-            <a href="/dashboard" className="block px-3 py-2 text-usgc-text hover:bg-usgc-line text-sm transition-colors">
-              Dashboard
-            </a>
-            <a href="/players" className="block px-3 py-2 bg-usgc-accent text-white text-sm">
-              Players
-            </a>
-            <a href="/teams" className="block px-3 py-2 text-usgc-text hover:bg-usgc-line text-sm transition-colors">
-              Teams
-            </a>
-            <a href="/schedule" className="block px-3 py-2 text-usgc-text hover:bg-usgc-line text-sm transition-colors">
-              Schedule
-            </a>
-            <a href="/matches" className="block px-3 py-2 text-usgc-text hover:bg-usgc-line text-sm transition-colors">
-              Matches
-            </a>
-            <a href="/attendance" className="block px-3 py-2 text-usgc-text hover:bg-usgc-line text-sm transition-colors">
-              Attendance
-            </a>
-            <a href="/finance" className="block px-3 py-2 text-usgc-text hover:bg-usgc-line text-sm transition-colors">
-              Finance
-            </a>
-            <a href="/compliance" className="block px-3 py-2 text-usgc-text hover:bg-usgc-line text-sm transition-colors">
-              Compliance
-            </a>
-            <a href="/settings" className="block px-3 py-2 text-usgc-text hover:bg-usgc-line text-sm transition-colors">
-              Settings
-            </a>
-          </nav>
-        </aside>
+      <div style={{ display: 'flex', height: 'calc(100vh - 80px)' }}>
+        {/* Sidebar Navigation */}
+        <div className="nav98" style={{ width: 200 }}>
+          <a href="/dashboard">Dashboard</a>
+          <a href="/players" className="active">Players</a>
+          <a href="/teams">Teams</a>
+          <a href="/schedule">Schedule</a>
+          <a href="/matches">Matches</a>
+          <a href="/attendance">Attendance</a>
+          <a href="/finance">Finance</a>
+          <a href="/compliance">Compliance</a>
+          <a href="/settings">Settings</a>
+        </div>
 
         {/* Main Content */}
-        <main className="flex-1 p-4 bg-usgc-bg">
-          {/* Header */}
-          <div className="mb-6">
-            <h1 className="text-2xl font-semibold mb-2">Players</h1>
-            <div className="flex items-center space-x-4 text-xs text-usgc-muted">
-              <span>Data as of {currentTime}</span>
-              <span>•</span>
-              <span>{players.length} total players</span>
-              <span>•</span>
-              <span>{players.filter(p => p.status === 'Active').length} active</span>
-            </div>
-          </div>
+        <div style={{ flex: 1, padding: 8, overflow: 'auto' }}>
+          <Panel98 title="Players" subtitle="Manage academy players">
+            <Toolbar98 meta={`last updated ${asOf} · ${filteredPlayers.length} of ${players.length} players`}>
+              <TextInput98 
+                placeholder="Filter players..." 
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+              />
+              {filter && (
+                <Button98 onClick={() => setFilter('')}>Clear</Button98>
+              )}
+              {selectedPlayers.length > 0 && (
+                <span style={{ fontSize: '11px', color: 'var(--98-text-muted)' }}>
+                  {selectedPlayers.length} selected
+                </span>
+              )}
+              <Button98>Add Player</Button98>
+              <Button98 onClick={handleExport}>Export CSV</Button98>
+            </Toolbar98>
 
-          {/* Control Bar */}
-          <div className="bg-usgc-panel border border-usgc-line mb-4">
-            <div className="px-4 py-2 flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <input
-                  type="text"
-                  placeholder="Filter players..."
-                  value={filter}
-                  onChange={(e) => setFilter(e.target.value)}
-                  className="bg-usgc-bg border border-usgc-line px-2 py-1 text-sm font-mono focus-ring"
-                />
-                {filter && (
-                  <button 
-                    onClick={() => setFilter('')}
-                    className="text-xs text-usgc-muted hover:text-usgc-text focus-ring"
-                  >
-                    Clear
-                  </button>
-                )}
-                {selectedPlayers.length > 0 && (
-                  <span className="text-xs text-usgc-muted">
-                    {selectedPlayers.length} selected
-                  </span>
-                )}
-              </div>
-              <div className="flex items-center space-x-2">
-                <button className="text-xs text-usgc-accent hover:underline focus-ring">
-                  Add Player
-                </button>
-                <button 
-                  onClick={handleExport}
-                  className="text-xs text-usgc-accent hover:underline focus-ring"
-                >
-                  Export CSV
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Players Table */}
-          <DenseTable
-            title="Player Roster"
-            rowCount={players.length}
-            filteredCount={filteredPlayers.length}
-            lastUpdated={currentTime}
-            onExport={handleExport}
-          >
-            <thead>
-              <tr>
-                <TableHeader className="w-8">
-                  <input
-                    type="checkbox"
-                    checked={selectedPlayers.length === filteredPlayers.length && filteredPlayers.length > 0}
-                    onChange={handleSelectAll}
-                    className="focus-ring"
-                  />
-                </TableHeader>
-                <TableHeader>Name</TableHeader>
-                <TableHeader numeric>Age</TableHeader>
-                <TableHeader>Team</TableHeader>
-                <TableHeader>Position</TableHeader>
-                <TableHeader>Status</TableHeader>
-                <TableHeader>Registration</TableHeader>
-                <TableHeader>Actions</TableHeader>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredPlayers.map((player) => (
-                <tr key={player.id} className="hover:bg-usgc-line/50">
-                  <TableCell>
-                    <input
-                      type="checkbox"
-                      checked={selectedPlayers.includes(player.id)}
-                      onChange={() => handleSelectPlayer(player.id)}
-                      className="focus-ring"
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium">{player.name}</TableCell>
-                  <TableCell numeric>{player.age}</TableCell>
-                  <TableCell>{player.team}</TableCell>
-                  <TableCell>{player.position}</TableCell>
-                  <TableCell>
-                    <span className={`inline-block px-1 py-0.5 text-xs font-mono ${
-                      player.status === 'Active' 
-                        ? 'bg-usgc-success/20 text-usgc-success' 
-                        : 'bg-usgc-error/20 text-usgc-error'
-                    }`}>
-                      {player.status.toUpperCase()}
-                    </span>
-                  </TableCell>
-                  <TableCell className="font-mono text-xs">
-                    {new Date(player.registrationDate).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-2">
-                      <button className="text-xs text-usgc-accent hover:underline focus-ring">
-                        Edit
-                      </button>
-                      <button className="text-xs text-usgc-error hover:underline focus-ring">
-                        Delete
-                      </button>
-                    </div>
-                  </TableCell>
-                </tr>
-              ))}
-            </tbody>
-          </DenseTable>
-        </main>
+            <Table98 
+              head={['', 'Name', 'Age', 'Team', 'Position', 'Status', 'Registration', 'Actions']}
+              rows={tableRows}
+            />
+          </Panel98>
+        </div>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ export const metadata = { title: 'Dragon Force Monterrey – Ops' };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-usgc-bg text-usgc-text antialiased font-mono text-sm leading-tight">
+      <body className="antialiased">
         <Providers>
           {children}
         </Providers>
