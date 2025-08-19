@@ -193,7 +193,7 @@ export async function GET(request: NextRequest) {
           pendingPayments: pendingPayments._sum.amount || 0,
         },
         recentActivity: {
-          matches: recentMatches.map(match => ({
+          matches: recentMatches.map((match: any) => ({
             id: match.id,
             date: match.date,
             time: match.startTime,
@@ -203,7 +203,7 @@ export async function GET(request: NextRequest) {
             status: match.status,
             competition: match.competition,
           })),
-          payments: recentPayments.map(payment => ({
+          payments: recentPayments.map((payment: any) => ({
             id: payment.id,
             date: payment.paidDate,
             player: payment.player.name,
